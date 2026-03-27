@@ -2,11 +2,11 @@
   "name": "ts-markdown",
   "version": "0.0.1",
   "description": "A simple markdown generator for TypeScript",
-  "main": "dist/Markdown.js",
+  "main": "dist/index.js",
   "scripts": {
     "test": "bun test",
     "readme": "bun ./src/example.ts > README.md",
-    "build": "bun build ./src/Markdown.ts --outdir ./dist",
+    "build": "bun build ./src/index.ts --outdir ./dist",
     "start": "bun run ./src/example.ts"
   },
   "repository": {

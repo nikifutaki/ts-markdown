@@ -2,27 +2,19 @@
 
 A TypeScript library for generating Markdown content programmatically.
 
+![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)
+
 ## Features
 
-Fluent interface for building Markdown documents
-
-Support for common Markdown elements:
-
-- Headings (h1, h2, h3)
-- Text
-- Links
-- Images
-- Code blocks with syntax highlighting
-- Lists
-
-Development roadmap:
-
-- [x] Add support for task lists
-- [ ] Add support for tables
-- [ ] Add support for blockquotes
-- [ ] Add support for task lists
-- [ ] Add support for nested task lists
-- [ ] Add support for custom formatting options
+- Two styles: **Fluent Builder** and **Pipeline**
+- AST-based internals for structured document manipulation
+- Composable lists — nest `list()` / `task()` freely:
+  - Headings (h1, h2, h3)
+  - Text, Links & Images
+  - Code blocks with syntax highlighting
+  - [x] Composable & nestable lists
+  - [ ] Tables
+  - [ ] Blockquotes
 
 ## Installation
 
@@ -32,43 +24,114 @@ npm install ts-markdown
 
 ## Usage
 
+### Builder Pattern
+
+Use the `Markdown` class for a fluent, chainable API:
+
 ```typescript
 import { Markdown } from 'ts-markdown';
 
-const md = new Markdown();
+const doc = new Markdown()
+  .h1('My Document')
+  .text('Hello, world!')
+  .list(['Item 1', 'Item 2'])
+  .code('console.log(42);', { language: 'typescript' })
+  .toString();
+```
 
-md.h1('Welcome to My Document')
-.text('This is a sample document created with ts-markdown.')
-.h2('Features')
-.list([
-  'Easy to use',
-  'TypeScript support',
-  'Fluent interface'
+### Pipeline Pattern
+
+Use `pipe()` with standalone functions for a functional style:
+
+```typescript
+import { pipe, md, h1, text, list, code, render } from 'ts-markdown';
+
+const doc = pipe(
+  md(),
+  h1('My Document'),
+  text('Hello, world!'),
+  list(['Item 1', 'Item 2']),
+  code('console.log(42);', 'typescript'),
+);
+
+console.log(render(doc));
+```
+
+### Composable Lists
+
+Nest `list()` and `task()` inside each other freely:
+
+```typescript
+import { list, task } from 'ts-markdown';
+
+list([
+  'Regular item',
+  list(['Sub-item A', 'Sub-item B']),
+  task([
+    { text: 'Done', checked: true },
+    { text: 'Todo', checked: false },
+  ]),
 ])
-.h2('Code Example')
-.code(
-  'const greeting = "Hello, World!";',
-  { language: 'typescript' }
-)
-.link('GitHub Repository', 'https://github.com/nikifutaki/ts-markdown')
+```
 
-console.log(md.toString());
+Output:
+
+- Regular item
+  - Sub-item A
+  - Sub-item B
+  - [x] Done
+  - [ ] Todo
+
+### Mixing Both Styles
+
+The Builder's `.pipe()` accepts both `MdNode` values and transform functions:
+
+```typescript
+import { Markdown, list } from 'ts-markdown';
+
+const doc = new Markdown()
+  .h1('Project')
+  .pipe(list(['Feature A', 'Feature B']))
+  .toString();
 ```
 
 ## API Reference
 
-### Methods
+### Builder Class
+
+All methods return `this` for chaining:
 
 - Headings
-  - `h1(text: string): this` - Add a level 1 heading
-  - `h2(text: string): this` - Add a level 2 heading
-  - `h3(text: string): this` - Add a level 3 heading
-- `text(text: string): this` - Add plain text
-- `link(text: string, url: string): this` - Add a link
-- `image(text: string, url: string): this` - Add an image
-- `code(language: string, code: string): this` - Add a code block with syntax highlighting
-- `list(items: string[]): this` - Add a bullet point list
-- `toString(): string` - Get the generated Markdown content
+  - `h1(text): this`
+  - `h2(text): this`
+  - `h3(text): this`
+- `text(text): this` - Plain text
+- `link(text, url): this` - Hyperlink
+- `image(alt, url): this` - Image
+- `code(code, options?): this` - Code block (`options.language` for syntax highlighting)
+- `list(items): this` - Unified list (supports nesting, `list()` / `task()` in list)
+- `task(items): this` - Shorthand for `list()` with all task items
+- `pipe(arg): this` - Append an `MdNode` or apply a transform function
+- `toNodes(): MdDoc` - Access the underlying AST
+- `toString(): string` - Render to Markdown string
+
+### Pipeline Functions
+
+Each function returns an `MdNode`. Use with `pipe()` or as list items for nesting:
+
+- `md()` - Create an empty document
+- `h1(text)`, `h2(text)`, `h3(text)` - Headings
+- `text(content)` - Plain text
+- `link(text, url)` - Hyperlink
+- `image(alt, url)` - Image
+- `code(content, language?)` - Code block
+- `list(items)` - Unified list
+- `task(items)` - Shorthand for `list()` with all task items
+
+### Utilities
+
+- `pipe(initial, ...args)` - Build a document from `MdNode` values and transform functions
+- `render(doc)` - Convert an `MdDoc` AST to a Markdown string
 
 ## Development
 
@@ -76,12 +139,17 @@ console.log(md.toString());
 # Install dependencies
 npm install
 
-# Generate README.md
-npm run readme
+# Run tests
+bun test
+
+# Generate README.md from this example
+bun run readme
 ```
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+[View LICENSE](./LICENSE)
 
 
