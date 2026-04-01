@@ -19,7 +19,7 @@ A TypeScript library for generating [Markdown](https://commonmark.org) content p
 ## Installation
 
 ```bash
-npm install ts-markdown
+npm install @nikifutaki/ts-markdown
 ```
 
 ## Usage
@@ -29,7 +29,7 @@ npm install ts-markdown
 Use the `Markdown` class for a fluent, chainable API:
 
 ```typescript
-import { Markdown } from 'ts-markdown';
+import { Markdown } from '@nikifutaki/ts-markdown';
 
 const doc = new Markdown()
   .h1('My Document')
@@ -44,7 +44,7 @@ const doc = new Markdown()
 Use `pipe()` with standalone functions for a functional style:
 
 ```typescript
-import { pipe, md, h1, text, list, code, render } from 'ts-markdown';
+import { pipe, md, h1, text, list, code, render } from '@nikifutaki/ts-markdown';
 
 const doc = pipe(
   md(),
@@ -62,7 +62,7 @@ console.log(render(doc));
 Nest `list()` and `task()` inside each other freely:
 
 ```typescript
-import { list, task } from 'ts-markdown';
+import { list, task } from '@nikifutaki/ts-markdown';
 
 list([
   'Regular item',
@@ -87,7 +87,7 @@ Output:
 The Builder's `.pipe()` accepts both `MdNode` values and transform functions:
 
 ```typescript
-import { Markdown, list } from 'ts-markdown';
+import { Markdown, list } from '@nikifutaki/ts-markdown';
 
 const doc = new Markdown()
   .h1('Project')
