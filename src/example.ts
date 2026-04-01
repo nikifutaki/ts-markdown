@@ -77,12 +77,12 @@ export const doc = new Markdown()
     ],
   ])
   .h2('Installation')
-  .code('npm install ts-markdown', { language: 'bash' })
+  .code('npm install @nikifutaki/ts-markdown', { language: 'bash' })
   .h2('Usage')
   .h3('Builder Pattern')
   .text('Use the `Markdown` class for a fluent, chainable API:')
   .code([
-    "import { Markdown } from 'ts-markdown';",
+    "import { Markdown } from '@nikifutaki/ts-markdown';",
     '',
     'const doc = new Markdown()',
     [
@@ -96,7 +96,7 @@ export const doc = new Markdown()
   .h3('Pipeline Pattern')
   .text('Use `pipe()` with standalone functions for a functional style:')
   .code([
-    "import { pipe, md, h1, text, list, code, render } from 'ts-markdown';",
+    "import { pipe, md, h1, text, list, code, render } from '@nikifutaki/ts-markdown';",
     '',
     'const doc = pipe(',
     [
@@ -113,7 +113,7 @@ export const doc = new Markdown()
   .h3('Composable Lists')
   .text('Nest `list()` and `task()` inside each other freely:')
   .code([
-    "import { list, task } from 'ts-markdown';",
+    "import { list, task } from '@nikifutaki/ts-markdown';",
     '',
     'list([',
     [
@@ -140,7 +140,7 @@ export const doc = new Markdown()
   .h3('Mixing Both Styles')
   .text("The Builder's `.pipe()` accepts both `MdNode` values and transform functions:")
   .code([
-    "import { Markdown, list } from 'ts-markdown';",
+    "import { Markdown, list } from '@nikifutaki/ts-markdown';",
     '',
     'const doc = new Markdown()',
     [
