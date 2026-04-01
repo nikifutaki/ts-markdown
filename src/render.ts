@@ -65,7 +65,14 @@ function renderListItem(item: Nested<ListItem>, level: number): string {
     if (item.type === 'list') {
       return item.items.map((sub) => renderListItem(sub, level + 1)).join('\n');
     }
-    return `${'  '.repeat(level)}- ${renderNode(item)}`;
+    const indent = '  '.repeat(level);
+    const rendered = renderNode(item);
+    const lines = rendered.split('\n');
+    const indented = [
+      `${indent}- ${lines[0]}`,
+      ...lines.slice(1).map((line) => `${indent}  ${line}`),
+    ].join('\n');
+    return indented;
   }
   // Task item: { text, checked }
   if ('text' in item && 'checked' in item) {

@@ -141,6 +141,17 @@ describe('render', () => {
     expect(render(doc)).toBe('# Title\n\nBody\n\n');
   });
 
+  it('renders multi-line MdNode (code) inside a list with proper indentation', () => {
+    const doc: MdDoc = [{
+      type: 'list',
+      items: [
+        'item',
+        { type: 'code', code: 'const x = 1;', language: 'ts' },
+      ],
+    }];
+    expect(render(doc)).toBe('- item\n- ```ts\n  const x = 1;\n  ```\n\n');
+  });
+
   it('renders non-list MdNode inside a list with - prefix', () => {
     const doc: MdDoc = [{
       type: 'list',
