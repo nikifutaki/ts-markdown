@@ -1,5 +1,16 @@
 import { Markdown } from './Markdown';
-import { pipe, md, h2, h3, text, link, image, list, task, code } from './index';
+import { pipe, md, h1, h2, h3, text, link, image, list, task, code, render } from './index';
+
+// =============================================================
+// Pipeline パターンでヘッダーを構築
+// h1(), text(), image() を実際に使用
+// =============================================================
+const header = pipe(
+  md(),
+  h1('ts-markdown'),
+  text('A TypeScript library for generating ', link('Markdown', 'https://commonmark.org'), ' content programmatically.'),
+  image('License: MIT', 'https://img.shields.io/badge/license-MIT-blue.svg'),
+);
 
 // =============================================================
 // Pipeline パターンで API Reference セクションを構築
@@ -50,9 +61,7 @@ const apiReference = pipe(
 // .pipe() で Pipeline の結果や transform 関数を組み込む
 // =============================================================
 export const doc = new Markdown()
-  .h1('ts-markdown')
-  .text('A TypeScript library for generating Markdown content programmatically.')
-  .image('License: MIT', 'https://img.shields.io/badge/license-MIT-blue.svg')
+  .pipe((nodes) => [...nodes, ...header])
   .h2('Features')
   .list([
     'Two styles: **Fluent Builder** and **Pipeline**',
@@ -155,7 +164,13 @@ export const doc = new Markdown()
     '# Generate README.md from this example',
     'bun run readme',
   ], 'bash'))
+  .h3('Roadmap')
+  .task([
+    { text: 'Tables support', checked: false },
+    { text: 'Blockquotes support', checked: false },
+  ])
   .h2('License')
-  .text('This project is licensed under the MIT License - see the ', link('LICENSE', './LICENSE'), ' file for details.');
+  .text('This project is licensed under the MIT License - see the ', link('LICENSE', './LICENSE'), ' file for details.')
+  .link('GitHub Repository', 'https://github.com/nikifutaki/ts-markdown');
 
-console.log(doc.toString());
+console.log(render(doc.toNodes()));

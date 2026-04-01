@@ -1,6 +1,6 @@
 # ts-markdown
 
-A TypeScript library for generating Markdown content programmatically.
+A TypeScript library for generating [Markdown](https://commonmark.org) content programmatically.
 
 ![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)
 
@@ -146,8 +146,15 @@ bun test
 bun run readme
 ```
 
+### Roadmap
+
+- [ ] Tables support
+- [ ] Blockquotes support
+
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](./LICENSE) file for details.
+
+[GitHub Repository](https://github.com/nikifutaki/ts-markdown)
 
 
