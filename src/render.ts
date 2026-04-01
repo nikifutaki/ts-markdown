@@ -57,7 +57,10 @@ function renderListItem(item: Nested<ListItem>, level: number): string {
   if (Array.isArray(item)) {
     return item.map((sub) => renderListItem(sub, level + 1)).join('\n');
   }
-  // MdNode (has 'type' property)
+  // MdNode check must come before task item check because task items
+  // ({ text, checked }) lack a 'type' property, while all MdNode variants
+  // have one. If we checked 'text' + 'checked' first, an MdNode that
+  // happened to have those fields would be misclassified as a task item.
   if ('type' in item) {
     if (item.type === 'list') {
       return item.items.map((sub) => renderListItem(sub, level + 1)).join('\n');

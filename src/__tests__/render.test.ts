@@ -129,6 +129,10 @@ describe('render', () => {
     expect(render(doc)).toBe('- Level 0\n  - Level 1\n    - Level 2\n\n');
   });
 
+  it('renders empty list node', () => {
+    expect(render([{ type: 'list', items: [] }])).toBe('\n\n');
+  });
+
   it('separates multiple nodes with double newline', () => {
     const doc: MdDoc = [
       { type: 'heading', level: 1, content: ['Title'] },
