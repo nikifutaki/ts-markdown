@@ -22,6 +22,16 @@ describe('pipe', () => {
     expect(doc).toHaveLength(0);
   });
 
+  it('does not mutate arrays returned by transforms', () => {
+    const shared = [{ type: 'heading' as const, level: 1 as const, content: ['Title'] }];
+    const inject = () => shared;
+    const doc1 = pipe(md(), inject, text('A'));
+    const doc2 = pipe(md(), inject, text('B'));
+    expect(shared).toHaveLength(1); // shared was not mutated
+    expect(doc1).toHaveLength(2);
+    expect(doc2).toHaveLength(2);
+  });
+
   it('mixes MdNode and transform functions', () => {
     const doc = pipe(
       md(),

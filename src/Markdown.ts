@@ -59,6 +59,10 @@ export class Markdown {
     return this;
   }
 
+  /**
+   * Returns a shallow copy of the internal AST.
+   * Node objects are shared references — do not mutate them.
+   */
   toNodes(): MdDoc {
     return [...this.nodes];
   }

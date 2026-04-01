@@ -10,7 +10,8 @@ function renderInline(content: InlineContent): string {
     if (typeof item === 'string') return item;
     if (item.type === 'link') return `[${item.text}](${item.url})`;
     if (item.type === 'image') return `![${item.alt}](${item.url})`;
-    return '';
+    const _exhaustive: never = item;
+    return _exhaustive;
   }).join('');
 }
 
@@ -28,6 +29,10 @@ function renderNode(node: MdNode): string {
       return renderCode(node.code, node.language);
     case 'list':
       return renderList(node.items);
+    default: {
+      const _exhaustive: never = node;
+      throw new Error(`Unhandled node type: ${(_exhaustive as any).type}`);
+    }
   }
 }
 
