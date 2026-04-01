@@ -53,11 +53,12 @@ function renderListItem(item: Nested<ListItem>, level: number): string {
     if (item.type === 'list') {
       return item.items.map((sub) => renderListItem(sub, level + 1)).join('\n');
     }
-    return `${'  '.repeat(level)}${renderNode(item)}`;
+    return `${'  '.repeat(level)}- ${renderNode(item)}`;
   }
-  // Task item: { text, checked? }
-  const prefix = item.checked !== undefined
-    ? `[${item.checked ? 'x' : ' '}] `
-    : '';
-  return `${'  '.repeat(level)}- ${prefix}${item.text}`;
+  // Task item: { text, checked }
+  if ('text' in item && 'checked' in item) {
+    const checkbox = item.checked ? '[x]' : '[ ]';
+    return `${'  '.repeat(level)}- ${checkbox} ${item.text}`;
+  }
+  throw new Error(`renderListItem: unrecognized item shape: ${JSON.stringify(item)}`);
 }

@@ -136,4 +136,16 @@ describe('render', () => {
     ];
     expect(render(doc)).toBe('# Title\n\nBody\n\n');
   });
+
+  it('renders non-list MdNode inside a list with - prefix', () => {
+    const doc: MdDoc = [{
+      type: 'list',
+      items: [
+        'Plain item',
+        { type: 'text', text: 'Inline text node' },
+        { type: 'link', text: 'Example', url: 'https://example.com' },
+      ],
+    }];
+    expect(render(doc)).toBe('- Plain item\n- Inline text node\n- [Example](https://example.com)\n\n');
+  });
 });

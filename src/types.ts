@@ -8,7 +8,7 @@ export type MdNode =
   | { type: 'code'; code: Nested<string>; language?: string }
   | { type: 'list'; items: Nested<ListItem>[] };
 
-export type ListItem = string | { text: string; checked?: boolean } | MdNode;
+export type ListItem = string | { text: string; checked: boolean } | MdNode;
 
 export type MdDoc = MdNode[];
 
