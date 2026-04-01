@@ -52,7 +52,7 @@ export class Markdown {
 
   pipe(arg: MdNode | MdTransform): this {
     if (typeof arg === 'function') {
-      this.nodes = arg(this.nodes);
+      this.nodes = [...arg(this.nodes)];
     } else {
       this.nodes.push(arg);
     }

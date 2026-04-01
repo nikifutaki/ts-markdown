@@ -90,6 +90,13 @@ describe('Markdown', () => {
     expect(output).toBe('See ![logo](logo.png) for details\n\n');
   });
 
+  it('pipe() does not mutate arrays returned by transforms', () => {
+    const shared = [{ type: 'heading' as const, level: 1 as const, content: ['Shared'] }];
+    const inject = () => shared;
+    new Markdown().pipe(inject).text('A');
+    expect(shared).toHaveLength(1); // shared was not mutated
+  });
+
   it('code without language does not produce undefined', () => {
     const output = new Markdown().code('echo hi').toString();
     expect(output).toContain('```\necho hi\n```');
