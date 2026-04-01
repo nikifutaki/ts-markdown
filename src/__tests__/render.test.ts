@@ -8,13 +8,13 @@ describe('render', () => {
   });
 
   it('renders heading nodes', () => {
-    expect(render([{ type: 'heading', level: 1, text: 'Title' }])).toBe('# Title\n\n');
-    expect(render([{ type: 'heading', level: 2, text: 'Sub' }])).toBe('## Sub\n\n');
-    expect(render([{ type: 'heading', level: 3, text: 'Sub2' }])).toBe('### Sub2\n\n');
+    expect(render([{ type: 'heading', level: 1, content: ['Title'] }])).toBe('# Title\n\n');
+    expect(render([{ type: 'heading', level: 2, content: ['Sub'] }])).toBe('## Sub\n\n');
+    expect(render([{ type: 'heading', level: 3, content: ['Sub2'] }])).toBe('### Sub2\n\n');
   });
 
   it('renders text nodes', () => {
-    expect(render([{ type: 'text', text: 'Hello world' }])).toBe('Hello world\n\n');
+    expect(render([{ type: 'text', content: ['Hello world'] }])).toBe('Hello world\n\n');
   });
 
   it('renders link nodes', () => {
@@ -131,8 +131,8 @@ describe('render', () => {
 
   it('separates multiple nodes with double newline', () => {
     const doc: MdDoc = [
-      { type: 'heading', level: 1, text: 'Title' },
-      { type: 'text', text: 'Body' },
+      { type: 'heading', level: 1, content: ['Title'] },
+      { type: 'text', content: ['Body'] },
     ];
     expect(render(doc)).toBe('# Title\n\nBody\n\n');
   });
@@ -142,10 +142,27 @@ describe('render', () => {
       type: 'list',
       items: [
         'Plain item',
-        { type: 'text', text: 'Inline text node' },
+        { type: 'text', content: ['Inline text node'] },
         { type: 'link', text: 'Example', url: 'https://example.com' },
       ],
     }];
     expect(render(doc)).toBe('- Plain item\n- Inline text node\n- [Example](https://example.com)\n\n');
+  });
+
+  it('renders heading with inline link', () => {
+    const doc: MdDoc = [{
+      type: 'heading',
+      level: 1,
+      content: ['Welcome to ', { type: 'link', text: 'ts-markdown', url: 'https://github.com' }, '!'],
+    }];
+    expect(render(doc)).toBe('# Welcome to [ts-markdown](https://github.com)!\n\n');
+  });
+
+  it('renders text with inline image', () => {
+    const doc: MdDoc = [{
+      type: 'text',
+      content: ['Check this: ', { type: 'image', alt: 'logo', url: 'logo.png' }],
+    }];
+    expect(render(doc)).toBe('Check this: ![logo](logo.png)\n\n');
   });
 });

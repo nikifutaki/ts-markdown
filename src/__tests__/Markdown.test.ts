@@ -1,5 +1,5 @@
 import { Markdown } from '../Markdown';
-import { list, task } from '../transforms';
+import { list, task, link, image } from '../transforms';
 
 describe('Markdown', () => {
   it('builds markdown with fluent API', () => {
@@ -46,7 +46,7 @@ describe('Markdown', () => {
   it('pipe() applies transform function', () => {
     const output = new Markdown()
       .h1('Title')
-      .pipe((doc) => [...doc, { type: 'text' as const, text: 'injected' }])
+      .pipe((doc) => [...doc, { type: 'text' as const, content: ['injected'] }])
       .toString();
     expect(output).toContain('# Title');
     expect(output).toContain('injected');
@@ -70,10 +70,24 @@ describe('Markdown', () => {
     const md = new Markdown().h1('Title');
     const nodes = md.toNodes();
     expect(nodes).toHaveLength(1);
-    expect(nodes[0]).toEqual({ type: 'heading', level: 1, text: 'Title' });
+    expect(nodes[0]).toEqual({ type: 'heading', level: 1, content: ['Title'] });
 
-    nodes.push({ type: 'text', text: 'extra' });
+    nodes.push({ type: 'text', content: ['extra'] });
     expect(md.toNodes()).toHaveLength(1);
+  });
+
+  it('h1 accepts inline content with links', () => {
+    const output = new Markdown()
+      .h1('Welcome to ', link('ts-markdown', 'https://github.com'), '!')
+      .toString();
+    expect(output).toBe('# Welcome to [ts-markdown](https://github.com)!\n\n');
+  });
+
+  it('text accepts inline content with images', () => {
+    const output = new Markdown()
+      .text('See ', image('logo', 'logo.png'), ' for details')
+      .toString();
+    expect(output).toBe('See ![logo](logo.png) for details\n\n');
   });
 
   it('code without language does not produce undefined', () => {

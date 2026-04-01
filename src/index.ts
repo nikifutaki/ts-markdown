@@ -1,4 +1,4 @@
-export type { MdNode, MdDoc, MdTransform, Nested, ListItem } from './types';
+export type { MdNode, MdDoc, MdTransform, Nested, ListItem, LinkNode, ImageNode, InlineNode, InlineItem, InlineContent } from './types';
 export { headingNode, textNode, linkNode, imageNode, codeNode, listNode } from './nodes';
 export { render } from './render';
 export { pipe } from './pipe';

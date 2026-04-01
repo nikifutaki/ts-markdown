@@ -1,16 +1,25 @@
-import type { MdNode, MdDoc, Nested, ListItem } from './types';
+import type { MdNode, MdDoc, Nested, ListItem, InlineContent } from './types';
 
 export function render(doc: MdDoc): string {
   if (doc.length === 0) return '';
   return doc.map(renderNode).join('\n\n') + '\n\n';
 }
 
+function renderInline(content: InlineContent): string {
+  return content.map((item) => {
+    if (typeof item === 'string') return item;
+    if (item.type === 'link') return `[${item.text}](${item.url})`;
+    if (item.type === 'image') return `![${item.alt}](${item.url})`;
+    return '';
+  }).join('');
+}
+
 function renderNode(node: MdNode): string {
   switch (node.type) {
     case 'heading':
-      return `${'#'.repeat(node.level)} ${node.text}`;
+      return `${'#'.repeat(node.level)} ${renderInline(node.content)}`;
     case 'text':
-      return node.text;
+      return renderInline(node.content);
     case 'link':
       return `[${node.text}](${node.url})`;
     case 'image':

@@ -1,5 +1,5 @@
 import { Markdown } from './Markdown';
-import { pipe, md, h2, h3, text, list, task, code } from './index';
+import { pipe, md, h2, h3, text, link, image, list, task, code } from './index';
 
 // =============================================================
 // Pipeline パターンで API Reference セクションを構築
@@ -156,7 +156,6 @@ export const doc = new Markdown()
     'bun run readme',
   ], 'bash'))
   .h2('License')
-  .text('This project is licensed under the MIT License - see the LICENSE file for details.')
-  .link('View LICENSE', './LICENSE');
+  .text('This project is licensed under the MIT License - see the ', link('LICENSE', './LICENSE'), ' file for details.');
 
 console.log(doc.toString());

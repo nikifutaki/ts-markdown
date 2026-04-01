@@ -1,31 +1,31 @@
-import type { MdNode, MdDoc, Nested, ListItem } from './types';
+import type { MdNode, MdDoc, Nested, ListItem, InlineItem, LinkNode, ImageNode } from './types';
 import { headingNode, textNode, linkNode, imageNode, codeNode, listNode } from './nodes';
 
 export function md(): MdDoc {
   return [];
 }
 
-export function h1(text: string): MdNode {
-  return headingNode(1, text);
+export function h1(...content: InlineItem[]): MdNode {
+  return headingNode(1, ...content);
 }
 
-export function h2(text: string): MdNode {
-  return headingNode(2, text);
+export function h2(...content: InlineItem[]): MdNode {
+  return headingNode(2, ...content);
 }
 
-export function h3(text: string): MdNode {
-  return headingNode(3, text);
+export function h3(...content: InlineItem[]): MdNode {
+  return headingNode(3, ...content);
 }
 
-export function text(content: string): MdNode {
-  return textNode(content);
+export function text(...content: InlineItem[]): MdNode {
+  return textNode(...content);
 }
 
-export function link(linkText: string, url: string): MdNode {
+export function link(linkText: string, url: string): LinkNode {
   return linkNode(linkText, url);
 }
 
-export function image(alt: string, url: string): MdNode {
+export function image(alt: string, url: string): ImageNode {
   return imageNode(alt, url);
 }
 
